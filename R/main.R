@@ -1,5 +1,3 @@
-setwd("~/Bureau/2024_RCE/R")
-
 figDir = '../Figs'
 tabDir = '../Tabs'
 
@@ -7,7 +5,6 @@ library(nptest)
 library(parallel)
 library(ErrViewLib)
 gPars = ErrViewLib::setgPars(type = 'publish')
-scalePoints = 0.2
 
 # Load functions ####
 source('functions.R')
@@ -86,7 +83,7 @@ par(
 
 xlim = range(abs(zmat))
 plot(abs(zmat[,1]), abs(zmat[,2]),
-     type = 'n', pch = 16, col = gPars$cols_tr2,
+     type = 'p', pch = 16, cex=0.75, col = gPars$cols[1],
      xlab = expression(group("|",xi[ZMS],"|")), xlim = xlim,
      ylab = expression(group("|",xi[RCE],"|")), ylim = xlim)
 grid()
@@ -95,7 +92,8 @@ polygon(c(1,6,6,1), c(-1,-1,1,1), border = NA, col= gPars$cols_tr2[2])
 abline(h=1, lty=2)
 abline(v=1, lty = 2)
 abline(a=0, b=1, lty = 2)
-text(abs(zmat[,1]), abs(zmat[,2]),1:nrow(zmat))
+text(abs(zmat[,1]), abs(zmat[,2]),1:nrow(zmat),
+     pos = 3, adj = 0, offset = 0.25)
 box()
 
 dev.off()
@@ -182,7 +180,6 @@ for(j in seq_along(dfList)) {
   nu = dfList[j]
   zm = zList[[paste0(nu)]]
   tm = tList[[paste0(nu)]]
-  print(colSums(zm == tm))
   pro[j,]  = colMeans(tm)
   success  = colMeans(tm) * nTry
   trials   = c(nTry, nTry)
