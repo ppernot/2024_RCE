@@ -5,7 +5,7 @@
 
 Codes and data to reproduce the tables and figures of
 "How to validate average calibration for machine learning regression tasks ?"
-by P. Pernot
+by P. Pernot (https://arxiv.org/abs/2402.10043) 
 
 Codes in "R" repertory
 * "main.R" the main code, calls several scripts:
