@@ -30,7 +30,7 @@ for(j in seq_along(dfList)) {
       x=1:M, data = X, statistic = calScoresBS1,
       R = nBoot, level = 0.95, method = "bca",
       parallel = TRUE, cl = cl)
-    
+
     ci       = bs$bca
     bias[i,] = bs$bias
     tm[i,]   = muBS[i,] >= ci[1,] & muBS[i,] <= ci[2,]
@@ -45,4 +45,18 @@ for(j in seq_along(dfList)) {
 }
 stopCluster(cl)
 
-save(nTry,stats,dfList,zList,tList,file='testValidRCE.Rda')
+# Estimate average skewness for simulated uncertainties
+betaGM = tmp = c()
+for(j in seq_along(dfList)) {
+  nu = dfList[j]
+  cat('\n',nu,': ')
+  scores = tm = bias = muBS = zmatBS =
+    matrix(NA, nrow = nTry, ncol = length(stats))
+  for(i in 1:nTry) {
+    uE = sqrt(MCMCpack::rinvgamma(M, nu/2, nu/2 ))
+    tmp[i] =  ErrViewLib::skewgm(uE)
+  }
+  betaGM[j] = mean(tmp)
+}
+
+save(nTry,stats,dfList,zList,tList,betaGM,file='testValidRCE.Rda')

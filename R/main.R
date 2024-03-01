@@ -21,7 +21,7 @@ stats   = names(calScoresBS1(1:length(E),cbind(E,uE)))
 
 scores = bias = cilo = ciup = ciString = zmat =
   matrix(NA, nrow = length(setList), ncol = length(stats))
-size = c()
+size = betagm = c()
 
 targets = c(1,0)
 
@@ -31,6 +31,8 @@ for(i in seq_along(setList)) {
   E  = D2$E
   M  = length(uE)
   size[i] = M
+
+  betagm[i] = ErrViewLib::skewgm(uE)
 
   # BS scores and CIs
   bs = fPredBS(cbind(E,uE), calScoresBS1, nBoot = nBoot, cl = cl)
@@ -45,11 +47,11 @@ for(i in seq_along(setList)) {
 stopCluster(cl)
 
 save(
-  stats, setList, scores, bias, cilo, ciup, ciString, zmat,
+  stats, setList, scores, betagm, bias, cilo, ciup, ciString, zmat,
   file = 'scores.Rda'
 )
 
-## Table 1 ####
+## Table 2 ####
 for(i in seq_along(stats)) {
   df = data.frame(
     set      = 1:length(setList),
@@ -178,7 +180,7 @@ if(doCalc) {
 pro = cilo = ciup = matrix(NA,nrow=length(dfList),ncol = 2)
 for(j in seq_along(dfList)) {
   nu = dfList[j]
-  zm = zList[[paste0(nu)]]
+  # zm = zList[[paste0(nu)]]
   tm = tList[[paste0(nu)]]
   pro[j,]  = colMeans(tm)
   success  = colMeans(tm) * nTry
@@ -213,6 +215,10 @@ abline(h=0.95,lty=2)
 for(i in 1:2)
   segments(dfList,cilo[,i],dfList,ciup[,i],col=i)
 box()
+mtext(paste0('- ',signif(betaGM,2)),side = 3, at = dfList,
+      col = 'blue', cex = 0.85 * par()$cex, las = 2)
+mtext(expression(beta[GM]),side = 3, at = 6, padj = -2.5,
+      col = 'blue', cex = par()$cex)
 legend(
   'bottomright', bty = 'n',
   legend = stats,
