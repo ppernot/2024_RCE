@@ -1,8 +1,27 @@
 # Functions ####
 
+# Non-stantardized Student's-t
+dt_ls <- function(x, df=1, mu=0, sigma=1) 1/sigma * dt((x - mu)/sigma, df)
+pt_ls <- function(q, df=1, mu=0, sigma=1)  pt((q - mu)/sigma, df)
+qt_ls <- function(p, df=1, mu=0, sigma=1)  qt(p, df)*sigma + mu
+rt_ls <- function(n, df=1, mu=0, sigma=1)  rt(n,df)*sigma + mu
+
 # Unit-variance Student's-t
 rT4 = function(N, df = 4)
   rt(N, df = df) / sqrt(df/(df-2))
+
+# Scaled F
+df_s <- function(x, df=1, sigma=1) 1/sigma * df(x/sigma, 1, df)
+pf_s <- function(q, df=1, sigma=1)  pf(q/sigma, 1, df)
+qf_s <- function(p, df=1, sigma=1)  qf(p, 1, df)*sigma
+rf_s <- function(n, df=1, sigma=1)  rf(n, 1, df)*sigma
+
+
+# cv = function(X) {
+#  q = quantile(X, probs = c(0.25,0.75))
+#  (q[2]-q[1]) / median(X) # cf. Scalia2020
+# }
+
 
 calScoresBS1 = function(x, data) {
   # Statistics to be bootstrapped

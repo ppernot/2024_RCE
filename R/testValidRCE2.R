@@ -4,33 +4,31 @@ library(ErrViewLib)
 
 source('functions.R')
 
-
-load('testValidRCE.Rda')
+load('testValidRCE2.Rda')
 
 nBoot = 5000
 M     = 5000
 nTry  = 1000
 
-dfList = c(2:10,15,20)
-
-uE = sqrt(MCMCpack::rinvgamma(M, 2, 2 ))
+uE = sqrt(MCMCpack::rinvgamma(M, 3, 3 ))
 E  = uE * rnorm(M)
 stats = names(calScoresBS1(1:M,cbind(E,uE)))
+
+dfList = c(2.5, 3:10, 20)
 
 if(FALSE) {
   tList = zList = list()
   cl <- makeCluster(detectCores())
   for(j in seq_along(dfList)) {
+    # for(j in c(1,10)) {
     nu = dfList[j]
     cat('\n',nu,': ')
     scores = tm = bias = muBS = zmatBS =
       matrix(NA, nrow = nTry, ncol = length(stats))
     for(i in 1:nTry) {
       cat(i,'/ ')
-      uE = sqrt(MCMCpack::rinvgamma(M, nu/2, nu/2 ))
-      E = uE * rnorm(M)
+      E = uE * rT4(M, nu)
       X  = cbind(E,uE)
-
       scores[i,] = calScoresBS1(1:M,X)
       muBS[i,] = c(1, 0)
 
@@ -50,6 +48,7 @@ if(FALSE) {
     }
     zList[[paste0(nu)]] = zmatBS <= 1
     tList[[paste0(nu)]] = tm
+    betaGM[j] = mean(tmp)
   }
   stopCluster(cl)
 }
@@ -63,14 +62,14 @@ for(j in seq_along(dfList)) {
     matrix(NA, nrow = nTry, ncol = length(stats))
   for(i in 1:500) {
     cat(i,'/ ')
-    uE2     = MCMCpack::rinvgamma(M, nu/2, nu/2 )
-    tmp[i]  = ErrViewLib::skewgm(uE2)
-    tmp2[i] = ErrViewLib::kurtcs(uE2)
+    E       = uE * rT4(M, nu)
+    tmp[i]  = ErrViewLib::skewgm(E^2)
+    tmp2[i] = ErrViewLib::kurtcs(E^2)
   }
   cat('\n')
   betaGM[j]  = mean(tmp)
   kappaCS[j] = mean(tmp2)
 }
 
-save(nTry,stats,dfList,zList,tList,betaGM, kappaCS,
-     file='testValidRCE.Rda')
+save(nTry, stats, dfList, zList, tList, betaGM, kappaCS,
+     file = 'testValidRCE2.Rda')
