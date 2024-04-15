@@ -4,12 +4,15 @@
 # 2024_RCE
 
 Codes and data to reproduce the tables and figures of
+
+"Negative impact of heavy-tailed uncertainty and
+error distributions on the reliability of calibration
+statistics for machine learning regression tasks"
+
+a revised and expanded version of
+
 "How to validate average calibration for machine learning regression tasks ?"
 by P. Pernot (https://arxiv.org/abs/2402.10043) 
 
 Codes in "R" repertory
-* "main.R" the main code, calls several scripts:
-* "functions.R"    auxillary functions
-* "getData.R"      reads datasets
-* "testValidRCE.R" generates data for Fig. 3 
-                   (takes ~1/2 day to complete)
+* "0_main.R" the main code, calls several scripts:
