@@ -216,11 +216,11 @@ for(i in 1:2)
 box()
 mtext(paste0('- ',signif(kappaCS,2)),side = 3, at = dfList,
       col = 'blue', cex = 0.75 * par()$cex, las = 2)
-mtext(expression(kappa[CS](u[E]^2)), side = 3, at = 1.6,
+mtext(expression(kappa[CS](E^2)), side = 3, at = 1.6,
       padj = 0, col = 'blue', cex = par()$cex)
 mtext(paste0(signif(betaGM,2)),side = 3, at = dfList,
       line = 2, col = 'red', cex = 0.75 * par()$cex, las = 2)
-mtext(expression(beta[GM](u[E]^2)), side = 3, at = 1.6,
+mtext(expression(beta[GM](E^2)), side = 3, at = 1.6,
       padj = -1.6, col = 'red', cex = par()$cex)
 legend(
   'bottomright', bty = 'n',

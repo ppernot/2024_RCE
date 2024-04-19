@@ -36,10 +36,10 @@ for(i in seq_along(setList)) {
 
   X = log(uE^2)
   h1 = hist(X, nclass = 33, plot = FALSE)
-  ylim = c(0,1.1*max(h1$density))
+  ylim = c(0,1.2*max(h1$density))
   hist(
     X, freq = FALSE, col = NULL,
-    border = gPars$cols_tr2[1],
+    border = gPars$cols[1],
     main = paste0('Set ',i), nclass = 33,
     ylim = ylim, yaxs = 'i',
     xlab = 'log(uE^2)'
@@ -50,7 +50,7 @@ for(i in seq_along(setList)) {
                         scale = 1/scale1)*exp(x),
     from = min(X) - abs(min(X)),
     to   = max(X) + abs(max(X)),
-    lwd  = 2*gPars$lwd,
+    lwd  = 2.5*gPars$lwd,
     n = 1000, col = gPars$cols[5], add = TRUE)
 
   if(i==3)
@@ -101,7 +101,7 @@ for(i in seq_along(setList)) {
   ylim = c(0,1.2*max(h1$density))
   hist(
     X, freq = FALSE, col = NULL, nclass=25,
-    border = gPars$cols_tr2[1], yaxs = 'i',
+    border = gPars$cols[1], yaxs = 'i',
     main = paste0('Set ',i),
     xlab = paste0('log(Error^2) ',D2$unit), ylim = ylim
   )
@@ -118,7 +118,7 @@ for(i in seq_along(setList)) {
 
   curve(
     df_s(exp(x),df = shape1,sigma = scale1)*exp(x),
-    from = min(X), to = 2*max(X), lwd = 2*gPars$lwd,
+    from = min(X), to = 2*max(X), lwd = 2.5*gPars$lwd,
     n= 1000, col = gPars$cols[5], add=TRUE)
 
   curve(
@@ -145,6 +145,9 @@ print(knitr::kable(signif(parstabE2,3), 'latex'))
 sink()
 
 # Add Fig. for Z ####
+
+parstabZ2 = matrix(NA, nrow = length(setList), ncol = 2)
+colnames(parstabuE2) = c("shape","scale")
 
 png(
   file = file.path(figDir, paste0('fig_fitZ2.png')),
@@ -173,7 +176,7 @@ for(i in seq_along(setList)) {
   ylim = c(0,1.2*max(h1$density))
   hist(
     X, freq = FALSE, col = NULL, nclass=25,
-    border = gPars$cols_tr2[1], yaxs = 'i',
+    border = gPars$cols[1], yaxs = 'i',
     main = paste0('Set ',i),
     xlab = paste0('log(Z^2) ',D2$unit), ylim = ylim
   )
@@ -186,11 +189,11 @@ for(i in seq_along(setList)) {
   pars   = summary(fit.t)$estimate
   shape1 = unname(pars["df"])
   scale1 = unname(pars["sigma"])
-  parstab[i,]=c(shape1, scale1)
+  parstabZ2[i,]=c(shape1, scale1)
 
   curve(
     df_s(exp(x),df = shape1,sigma = scale1)*exp(x),
-    from = min(X), to = 2*max(X), lwd = 2*gPars$lwd,
+    from = min(X), to = 2*max(X), lwd = 2.5*gPars$lwd,
     n= 1000, col = gPars$cols[6], add=TRUE)
 
   if(i==1)
@@ -207,6 +210,6 @@ for(i in seq_along(setList)) {
 dev.off()
 
 sink(file =  file.path(tabDir,'tabParsFitZ2.tex'))
-print(knitr::kable(signif(parstab,3), 'latex'))
+print(knitr::kable(signif(parstabZ2,3), 'latex'))
 sink()
 
