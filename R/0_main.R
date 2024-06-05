@@ -568,7 +568,3 @@ for(i in seq_along(setList)) {
 }
 stopCluster(cl)
 dev.off()
-
-## Fig. 8 ####
-
-source('bin_beta_kappa.R')
