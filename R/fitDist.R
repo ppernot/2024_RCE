@@ -42,6 +42,7 @@ for(i in seq_along(setList)) {
     border = gPars$cols[1],
     main = paste0('Set ',i), nclass = 33,
     ylim = ylim, yaxs = 'i',
+    xlim = quantile(X, probs = c(0.001,0.999)),
     xlab = 'log(uE^2)'
   )
   curve(
@@ -103,7 +104,9 @@ for(i in seq_along(setList)) {
     X, freq = FALSE, col = NULL, nclass=25,
     border = gPars$cols[1], yaxs = 'i',
     main = paste0('Set ',i),
-    xlab = paste0('log(Error^2) ',D2$unit), ylim = ylim
+    xlab = paste0('log(Error^2) ',D2$unit),
+    ylim = ylim,
+    xlim = quantile(X, probs = c(0.01,0.99)),
   )
 
   fit.t<-fitdistrplus::fitdist(

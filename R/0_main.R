@@ -1,6 +1,8 @@
 figDir = '../Figs'
 tabDir = '../Tabs'
 
+doCalc = FALSE # set to TRUE for first run
+
 library(nptest)
 library(parallel)
 library(ErrViewLib)
@@ -101,10 +103,166 @@ source('fitDist.R')
 
 source('beta_kappa.R')
 
-## Fig. 4 ####
+## Figs. 4 & 9 ####
+if(doCalc) {
+  source("altRCE.R")
+} else {
+  load(file = 'altRCE.Rda')
+}
 
-### Fig. 4a ####
-doCalc = FALSE
+png(
+  file = file.path(figDir, paste0('fig_04.png')),
+  width  = 2*gPars$reso,
+  height = 1*gPars$reso
+)
+par(
+  mfrow = c(1, 2),
+  mar = gPars$mar,
+  mgp = gPars$mgp,
+  pty = 'm',
+  tcl = gPars$tcl,
+  cex = gPars$cex,
+  cex.main = 1,
+  lwd = gPars$lwd
+)
+x = beta # 1:nrow(nuCases) #nuCases[,2]
+cols = rep(1:length(nuIG), length(nuTS))
+pch  = -1 + sort(rep(1:length(nuTS), length(nuIG)))
+ylim = range(
+  c(0,
+    min(scores-2*uscores),max(scores+2*uscores)
+  )
+)
+ylim = 0.05*c(-1, 2)
+xlim = c(0.8,1)
+
+istat = 1
+sc  = scores[,istat]
+usc = uscores[,istat]
+
+plot( x, sc, log = '', pch = pch,
+      type = 'p', col = gPars$cols[cols],
+      xlim = xlim, lwd = 1.5 * gPars$lwd,
+      xlab = expression(beta[GM](E^2)),
+      ylim = ylim,
+      ylab = expression(tilde(theta)[list(nu,ref)]),
+      main = stats[istat],
+      panel.first = grid()
+)
+abline(h = 0, lty = 2)
+for(j in seq_along(x)) {
+  arrows(x[j],sc[j]-2*usc[j],
+         x[j],sc[j]+2*usc[j],
+         angle = 90, lwd = gPars$lwd,
+         col = gPars$cols[cols[j]],
+         code = 0)
+}
+legend(
+  'topleft', bty = 'n', ncol = 2, cex = 0.8,
+  title = expression(nu[IG]~~~~nu[D]),
+  legend = c(nuIG, nuTS),
+  lty = 0,
+  col = c(gPars$cols[1:length(nuIG)],rep(1,length(nuTS))),
+  pch = c(rep(19,length(nuIG)),0:(length(nuTS)-1))
+)
+
+x = betaZ # 1:nrow(nuCases) #nuCases[,2]
+cols = rep(1:length(nuIG), length(nuTS))
+pch  = -1 + sort(rep(1:length(nuTS), length(nuIG)))
+ylim = range(
+  c(0,
+    min(scores-2*uscores),max(scores+2*uscores)
+  )
+)
+ylim = 0.05*c(-1, 2)
+xlim = c(0.6,1)
+
+istat = 3
+sc  = scores[,istat]
+usc = uscores[,istat]
+
+plot( x, sc, log = '', pch = pch,
+      type = 'p', col = gPars$cols[cols],
+      xlim = xlim, lwd = 1.5 * gPars$lwd,
+      xlab = expression(beta[GM](Z^2)),
+      ylim = ylim,
+      ylab = expression(tilde(theta)[list(nu,ref)]),
+      main = stats[istat],
+      panel.first = grid()
+)
+abline(h = 0, lty = 2)
+for(j in seq_along(x)) {
+  arrows(x[j],sc[j]-2*usc[j],
+         x[j],sc[j]+2*usc[j],
+         angle = 90, lwd = gPars$lwd,
+         col = gPars$cols[cols[j]],
+         code = 0)
+}
+
+dev.off()
+
+png(
+  file = file.path(figDir, paste0('fig_09.png')),
+  width  = 1*gPars$reso,
+  height = 1*gPars$reso
+)
+par(
+  mfrow = c(1, 1),
+  mar = gPars$mar,
+  mgp = gPars$mgp,
+  pty = 'm',
+  tcl = gPars$tcl,
+  cex = gPars$cex,
+  cex.main = 1,
+  lwd = gPars$lwd
+)
+x = beta # 1:nrow(nuCases) #nuCases[,2]
+cols = rep(1:length(nuIG), length(nuTS))
+pch  = -1 + sort(rep(1:length(nuTS), length(nuIG)))
+ylim = range(
+  c(0,
+    min(scores-2*uscores),max(scores+2*uscores)
+  )
+)
+ylim = 0.05*c(-1, 2)
+xlim = c(0.8,1)
+
+istat = 2
+sc  = scores[,istat]
+usc = uscores[,istat]
+
+plot( x, sc, log = '', pch = pch,
+      type = 'p', col = gPars$cols[cols],
+      xlim = xlim, lwd = 1.5 * gPars$lwd,
+      xlab = expression(beta[GM](E^2)),
+      ylim = ylim,
+      ylab = expression(tilde(theta)[list(nu,ref)]),
+      main = stats[istat],
+      panel.first = grid()
+)
+abline(h = 0, lty = 2)
+for(j in seq_along(x)) {
+  arrows(x[j],sc[j]-2*usc[j],
+         x[j],sc[j]+2*usc[j],
+         angle = 90, lwd = gPars$lwd,
+         col = gPars$cols[cols[j]],
+         code = 0)
+}
+if(istat==2)
+  legend(
+    'topleft', bty = 'n', ncol = 2, cex = 0.8,
+    title = expression(nu[IG]~~~~nu[D]),
+    legend = c(nuIG, nuTS),
+    lty = 0,
+    col = c(gPars$cols[1:length(nuIG)],rep(1,length(nuTS))),
+    pch = c(rep(19,length(nuIG)),0:(length(nuTS)-1))
+  )
+dev.off()
+
+
+## Fig. 5 ####
+
+### Fig. 5a ####
 if(doCalc) {
   # Takes about 1/2 day to complete on 8 cores...
   source("testValidRCE.R")
@@ -126,23 +284,23 @@ for(j in seq_along(dfList)) {
 }
 
 png(
-  file = file.path(figDir, paste0('fig_04a.png')),
+  file = file.path(figDir, paste0('fig_05a.png')),
   width  = gPars$reso,
   height = gPars$reso
 )
 par(
   mfrow = c(1, 1),
-  mar = c(3, 3, 4, 0.5), #gPars$mar,
+  mar = c(3, 3, 2, 0.5), #gPars$mar,
   mgp = gPars$mgp,
   pty = 'm',
   tcl = gPars$tcl,
   cex = gPars$cex,
   cex.main = 1,
-  lwd = gPars$lwd
+  lwd = 2*gPars$lwd
 )
 matplot(dfList, pro, type = 'b',
         pch=16:17, lty =1, col=gPars$cols[1:2],
-        log = 'x',
+        log = 'x', lwd = 1.5 * gPars$lwd,
         xlab = expression(nu[IG]), xlim = c(2,10),
         ylab = expression(p[val]), ylim = c(0.6,1.0))
 grid(equilogs = FALSE)
@@ -150,14 +308,10 @@ abline(h=0.95,lty=2)
 for(i in 1:2)
   segments(dfList,cilo[,i],dfList,ciup[,i],col=i)
 box()
-mtext(paste0('- ',signif(kappaCS,2)),side = 3, at = dfList,
+mtext(paste0('- ',signif(betaGM,2)),side = 3, at = dfList,
       col = 'blue', cex = 0.75 * par()$cex, las = 2)
-mtext(expression(kappa[CS](u[E]^2)), side = 3, at = 1.6,
-      padj = 0, col = 'blue', cex = par()$cex)
-mtext(paste0(signif(betaGM,2)),side = 3, at = dfList,
-      line = 2, col = 'red', cex = 0.75 * par()$cex, las = 2)
 mtext(expression(beta[GM](u[E]^2)), side = 3, at = 1.6,
-      padj = -1.6, col = 'red', cex = par()$cex)
+      padj = 0, col = 'blue', cex = par()$cex)
 legend(
   'bottomright', bty = 'n',
   legend = stats,
@@ -167,8 +321,8 @@ legend(
 )
 dev.off()
 
-### Fig. 4b ####
-doCalc = FALSE
+
+### Fig. 5b ####
 if(doCalc) {
   # Takes about 1/2 day to complete on 8 cores...
   source("testValidRCE2.R")
@@ -190,13 +344,13 @@ for(j in seq_along(dfList)) {
 }
 
 png(
-  file = file.path(figDir, paste0('fig_04b.png')),
+  file = file.path(figDir, paste0('fig_05b.png')),
   width  = gPars$reso,
   height = gPars$reso
 )
 par(
   mfrow = c(1, 1),
-  mar = c(3, 3, 4, 0.5), #gPars$mar,
+  mar = c(3, 3, 2, 0.5), #gPars$mar,
   mgp = gPars$mgp,
   pty = 'm',
   tcl = gPars$tcl,
@@ -206,7 +360,7 @@ par(
 )
 matplot(dfList, pro, type = 'b',
         pch=16:17, lty =1, col=gPars$cols[1:2],
-        log = 'x',
+        log = 'x', lwd = 1.5 * gPars$lwd,
         xlab = expression(nu[D]), xlim = c(2,10),
         ylab = expression(p[val]), ylim = c(0.6,1.0))
 grid(equilogs = FALSE)
@@ -214,14 +368,10 @@ abline(h=0.95,lty=2)
 for(i in 1:2)
   segments(dfList,cilo[,i],dfList,ciup[,i],col=i)
 box()
-mtext(paste0('- ',signif(kappaCS,2)),side = 3, at = dfList,
+mtext(paste0('- ',signif(betaGM,2)),side = 3, at = dfList,
       col = 'blue', cex = 0.75 * par()$cex, las = 2)
-mtext(expression(kappa[CS](E^2)), side = 3, at = 1.6,
+mtext(expression(beta[GM](u[E]^2)), side = 3, at = 1.6,
       padj = 0, col = 'blue', cex = par()$cex)
-mtext(paste0(signif(betaGM,2)),side = 3, at = dfList,
-      line = 2, col = 'red', cex = 0.75 * par()$cex, las = 2)
-mtext(expression(beta[GM](E^2)), side = 3, at = 1.6,
-      padj = -1.6, col = 'red', cex = par()$cex)
 legend(
   'bottomright', bty = 'n',
   legend = stats,
@@ -231,14 +381,15 @@ legend(
 )
 dev.off()
 
-## Fig. 5 ####
+## Fig. 6 ####
 # Might take some time...
 source('beta_kappa_Sets.R')
 
 
-## Fig. 6a ####
+## Fig. 7a ####
+load('scores.Rda')
 png(
-  file = file.path(figDir, paste0('fig_06a.png')),
+  file = file.path(figDir, paste0('fig_07a.png')),
   width  = 1*gPars$reso,
   height = 1*gPars$reso
 )
@@ -256,6 +407,7 @@ par(
 xlim = c(-0.1,4)# range(abs(zmat))
 plot(abs(zmat[,1]), abs(zmat[,2]),
      type = 'p', pch = 16, cex=0.75, col = gPars$cols[1],
+     log = '', lwd = 1.5 * gPars$lwd,
      xlab = expression(group("|",zeta[ZMS],"|")),
      xlim = xlim, xaxs = 'i',
      ylab = expression(group("|",zeta[RCE],"|")),
@@ -272,7 +424,7 @@ box()
 
 dev.off()
 
-## Fig. 6b ####
+## Fig. 7b ####
 
 cl <- makeCluster(detectCores())
 stats   = names(calScoresBS1(1:length(E),cbind(E,uE)))
@@ -316,7 +468,7 @@ for(i in seq_along(setList)) {
 stopCluster(cl)
 
 png(
-  file = file.path(figDir, paste0('fig_06b.png')),
+  file = file.path(figDir, paste0('fig_07b.png')),
   width  = 1*gPars$reso,
   height = 1*gPars$reso
 )
@@ -350,10 +502,10 @@ box()
 
 dev.off()
 
-## Fig. 7 ####
+## Fig. 8 ####
 
 png(
-  file = file.path(figDir, paste0('fig_07.png')),
+  file = file.path(figDir, paste0('fig_08.png')),
   width  = 3*gPars$reso,
   height = 3*gPars$reso
 )

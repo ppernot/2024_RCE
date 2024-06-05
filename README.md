@@ -12,7 +12,7 @@ statistics for machine learning regression tasks"
 a revised and expanded version of
 
 "How to validate average calibration for machine learning regression tasks ?"
-by P. Pernot (https://arxiv.org/abs/2402.10043) 
+by P. Pernot (https://arxiv.org/abs/2402.10043v2) 
 
 Codes in "R" repertory
-* "0_main.R" the main code, calls several scripts:
+* "0_main.R" the main code, calls several scripts.
