@@ -55,7 +55,8 @@ for(j in 1:nrow(nuCases)) {
   beta[j] = round(ErrViewLib::skewgm(Ep^2),2)
   betaZ[j] = round(ErrViewLib::skewgm((Ep/uE)^2),2)
 }
-save(stats, scores, uscores, beta, betaZ, nuEff, nuCases,
+save(stats, scores, uscores, beta, betaZ,
+     nuEff, nuIG, nuTS, nuCases,
      file = 'altRCE.Rda')
 
 

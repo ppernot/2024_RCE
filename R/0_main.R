@@ -103,7 +103,7 @@ source('fitDist.R')
 
 source('beta_kappa.R')
 
-## Figs. 4 & 9 ####
+## Figs. 4 & 11 ####
 if(doCalc) {
   source("altRCE.R")
 } else {
@@ -202,7 +202,7 @@ for(j in seq_along(x)) {
 dev.off()
 
 png(
-  file = file.path(figDir, paste0('fig_09.png')),
+  file = file.path(figDir, paste0('fig_11.png')),
   width  = 1*gPars$reso,
   height = 1*gPars$reso
 )
@@ -568,3 +568,7 @@ for(i in seq_along(setList)) {
 }
 stopCluster(cl)
 dev.off()
+
+# Additional datasets ####
+## Figs. 9-10; Tables V-VI ####
+source('addDatasets.R')
