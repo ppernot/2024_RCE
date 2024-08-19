@@ -2,7 +2,7 @@ getCase <- function(case, filterZerE = FALSE) {
   uE = unlist(
     read.csv(
       file.path(
-        '..','Data','Morgan',
+        '..','Data','JAC2024',
         case,
         'model_errors_leaveout_calibrated.csv')
     ),
@@ -10,7 +10,7 @@ getCase <- function(case, filterZerE = FALSE) {
   E  = unlist(
     read.csv(
       file.path(
-        '..','Data','Morgan',
+        '..','Data','JAC2024',
         case,
         'residuals_leaveout.csv')
     ),
@@ -83,10 +83,10 @@ if(doCalc) {
   save(
     stats, scores, bias,
     cilo, ciup, ciString, zmat,
-    file = 'morganScores.Rda'
+    file = 'Jac2024Scores.Rda'
   )
 } else {
-  load(file = 'morganScores.Rda')
+  load(file = 'JAC2024Scores.Rda')
 }
 
 df = data.frame(
@@ -121,7 +121,7 @@ for(i in seq_along(cases)) {
 df = df[-1,]
 rownames(df) = 1:length(cases)
 
-sink(file = file.path(tabDir,'morganScores.tex'))
+sink(file = file.path(tabDir,'JAC2024Scores.tex'))
 print(knitr::kable(df, 'latex'))
 sink()
 
