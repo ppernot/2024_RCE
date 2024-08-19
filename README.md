@@ -16,3 +16,6 @@ by P. Pernot (https://arxiv.org/abs/2402.10043v2)
 
 Codes in "R" repertory
 * "0_main.R" the main code, calls several scripts.
+
+Note: The dataset JAC2024 that is referred to in JAC2024
+is too big to be stored here.
